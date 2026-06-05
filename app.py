@@ -15,11 +15,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.markdown(
-    "<p style='text-align:center;color:#64748B;font-size:18px;'>Smart FinTech Dashboard</p>",
-    unsafe_allow_html=True
-)
-
 st.write("---")
 
 # ---------------- SIDEBAR ----------------
@@ -118,30 +113,34 @@ if st.session_state.calculated:
 
     st.pyplot(fig)
 
-    # ---------------- LOAN SUMMARY (FIXED INDENTATION) ----------------
+    # ---------------- LOAN SUMMARY ----------------
     st.subheader("📄 Loan Summary")
 
-    st.markdown(f"""
-    <div style="
-        background: linear-gradient(135deg, #0F172A, #1E293B);
-        padding:22px;
-        border-radius:14px;
-        color:white;
-        box-shadow:0px 8px 20px rgba(0,0,0,0.35);
-        line-height:1.8;
-    ">
-        <h3 style="color:#38BDF8;">📄 Loan Information</h3>
-        <hr style="border:0.5px solid #334155;">
-
-        💰 <b>Loan Amount:</b> Rs {st.session_state.loan_amount:,.0f} <br>
-        📊 <b>Interest Rate:</b> {st.session_state.interest_rate:.2f}% <br>
-        📅 <b>Loan Tenure:</b> {st.session_state.years} Years <br>
-        ⏳ <b>Total Months:</b> {st.session_state.n} <br>
-        📌 <b>Total Interest:</b> Rs {st.session_state.total_interest:,.2f} <br>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(
+        f"""
+        <div style="
+            background: linear-gradient(135deg, #0F172A, #1E293B);
+            padding: 22px;
+            border-radius: 14px;
+            color: white;
+            box-shadow: 0px 8px 20px rgba(0,0,0,0.35);
+            line-height: 2;
+            font-size: 16px;
+        ">
+            <h3 style="color:#38BDF8; margin-bottom:10px;">📄 Loan Information</h3>
+            <hr style="border: 0.5px solid #334155; margin-bottom:12px;">
+            💰 <b>Loan Amount:</b> Rs {st.session_state.loan_amount:,.0f} <br>
+            📊 <b>Interest Rate:</b> {st.session_state.interest_rate:.2f}% <br>
+            📅 <b>Loan Tenure:</b> {st.session_state.years} Years <br>
+            ⏳ <b>Total Months:</b> {st.session_state.n} <br>
+            📌 <b>Total Interest:</b> Rs {st.session_state.total_interest:,.2f} <br>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
     # ---------------- PDF ----------------
+    st.write("")
     st.subheader("📥 Download Report")
 
     class PDF(FPDF):
