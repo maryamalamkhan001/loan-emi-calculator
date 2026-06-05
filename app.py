@@ -1,8 +1,6 @@
 import streamlit as st
-import pandas as pd
 import matplotlib.pyplot as plt
 from fpdf import FPDF
-from io import BytesIO
 
 st.set_page_config(
     page_title="Professional Loan EMI Calculator",
@@ -10,7 +8,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# ---------------- UI DESIGN ----------------
+# ---------------- UI ----------------
 st.markdown("""
 <style>
 .title {
@@ -49,7 +47,10 @@ loan_amount = st.sidebar.number_input("Loan Amount (Rs)", 1000.0, value=100000.0
 interest_rate = st.sidebar.number_input("Interest Rate (%)", 0.0, value=12.0)
 years = st.sidebar.number_input("Tenure (Years)", 1.0, value=5.0)
 
-# ---------------- CALCULATION ----------------
+# ---------------- SESSION STATE ----------------
+if "calculated" not in st.session_state:
+    st.session_state.calculated = False
+
 if st.sidebar.button("🚀 Calculate EMI"):
 
     r = interest_rate / (12 * 100)
@@ -71,14 +72,28 @@ if st.sidebar.button("🚀 Calculate EMI"):
         principal_list.append(principal)
         month_list.append(m)
 
-    # ---------------- RESULTS ----------------
+    # SAVE DATA
+    st.session_state.calculated = True
+    st.session_state.emi = emi
+    st.session_state.total_payment = emi * n
+    st.session_state.total_interest = (emi * n) - loan_amount
+    st.session_state.loan_amount = loan_amount
+    st.session_state.interest_rate = interest_rate
+    st.session_state.years = years
+    st.session_state.month_list = month_list
+    st.session_state.interest_list = interest_list
+    st.session_state.principal_list = principal_list
+
     st.success("✅ Calculation Completed Successfully!")
+
+# ---------------- SHOW RESULTS ONLY IF CALCULATED ----------------
+if st.session_state.calculated:
 
     col1, col2, col3 = st.columns(3)
 
-    col1.metric("💰 Monthly EMI", f"Rs {emi:,.2f}")
-    col2.metric("📊 Total Payment", f"Rs {emi*n:,.2f}")
-    col3.metric("📌 Total Interest", f"Rs {(emi*n)-loan_amount:,.2f}")
+    col1.metric("💰 Monthly EMI", f"Rs {st.session_state.emi:,.2f}")
+    col2.metric("📊 Total Payment", f"Rs {st.session_state.total_payment:,.2f}")
+    col3.metric("📌 Total Interest", f"Rs {st.session_state.total_interest:,.2f}")
 
     st.write("---")
 
@@ -86,16 +101,15 @@ if st.sidebar.button("🚀 Calculate EMI"):
     st.subheader("📊 EMI Breakdown Chart")
 
     fig, ax = plt.subplots()
-    ax.plot(month_list[:12], interest_list[:12], label="Interest")
-    ax.plot(month_list[:12], principal_list[:12], label="Principal")
-
+    ax.plot(st.session_state.month_list[:12], st.session_state.interest_list[:12], label="Interest")
+    ax.plot(st.session_state.month_list[:12], st.session_state.principal_list[:12], label="Principal")
     ax.set_xlabel("Month")
     ax.set_ylabel("Amount")
     ax.legend()
 
     st.pyplot(fig)
 
-    # ---------------- LOAN SUMMARY ----------------
+    # ---------------- SUMMARY ----------------
     st.subheader("📊 Loan Summary")
 
     st.markdown(f"""
@@ -103,15 +117,14 @@ if st.sidebar.button("🚀 Calculate EMI"):
         <h4>Loan Information</h4>
         <hr>
 
-        <b>Loan Amount:</b> Rs {loan_amount:,.2f}<br><br>
-        <b>Interest Rate:</b> {interest_rate}%<br><br>
-        <b>Loan Tenure:</b> {years} Years<br><br>
-        <b>Total Months:</b> {n}<br><br>
-        <b>Interest Percentage:</b> {((emi*n)-loan_amount)/loan_amount*100:.2f}%<br>
+        <b>Loan Amount:</b> Rs {st.session_state.loan_amount:,.2f}<br><br>
+        <b>Interest Rate:</b> {st.session_state.interest_rate}%<br><br>
+        <b>Loan Tenure:</b> {st.session_state.years} Years<br><br>
+        <b>Total Interest:</b> Rs {st.session_state.total_interest:,.2f}<br>
     </div>
     """, unsafe_allow_html=True)
 
-    # ---------------- PDF DOWNLOAD ----------------
+    # ---------------- PDF ----------------
     st.subheader("📥 Download Report (PDF)")
 
     class PDF(FPDF):
@@ -125,12 +138,12 @@ if st.sidebar.button("🚀 Calculate EMI"):
         pdf.add_page()
         pdf.set_font("Arial", size=12)
 
-        pdf.cell(200, 10, txt=f"Loan Amount: Rs {loan_amount}", ln=True)
-        pdf.cell(200, 10, txt=f"Interest Rate: {interest_rate}%", ln=True)
-        pdf.cell(200, 10, txt=f"Tenure: {years} Years", ln=True)
-        pdf.cell(200, 10, txt=f"Monthly EMI: Rs {emi:.2f}", ln=True)
-        pdf.cell(200, 10, txt=f"Total Payment: Rs {emi*n:.2f}", ln=True)
-        pdf.cell(200, 10, txt=f"Total Interest: Rs {(emi*n)-loan_amount:.2f}", ln=True)
+        pdf.cell(200, 10, txt=f"Loan Amount: Rs {st.session_state.loan_amount}", ln=True)
+        pdf.cell(200, 10, txt=f"Interest Rate: {st.session_state.interest_rate}%", ln=True)
+        pdf.cell(200, 10, txt=f"Tenure: {st.session_state.years} Years", ln=True)
+        pdf.cell(200, 10, txt=f"Monthly EMI: Rs {st.session_state.emi:.2f}", ln=True)
+        pdf.cell(200, 10, txt=f"Total Payment: Rs {st.session_state.total_payment:.2f}", ln=True)
+        pdf.cell(200, 10, txt=f"Total Interest: Rs {st.session_state.total_interest:.2f}", ln=True)
 
         pdf_bytes = pdf.output(dest="S").encode("latin-1")
 
@@ -142,4 +155,4 @@ if st.sidebar.button("🚀 Calculate EMI"):
         )
 
 st.write("---")
-st.caption("👩‍💻 Developed by Maryam Alam Khan | BS FinTech Student")
+st.caption("👩‍💻 Developed by Alishba Qureshi | BS FinTech Student")
