@@ -66,61 +66,50 @@ value=5.0
 
 if st.sidebar.button("🚀 Calculate EMI"):
 
-```
-monthly_rate = interest_rate / (12 * 100)
-months = int(years * 12)
+    monthly_rate = interest_rate / (12 * 100)
+    months = int(years * 12)
 
-if monthly_rate == 0:
-    emi = loan_amount / months
-else:
-    emi = (
-        loan_amount * monthly_rate * (1 + monthly_rate) ** months
-    ) / (
-        (1 + monthly_rate) ** months - 1
-    )
+    if monthly_rate == 0:
+        emi = loan_amount / months
+    else:
+        emi = (
+            loan_amount * monthly_rate * (1 + monthly_rate) ** months
+        ) / (
+            (1 + monthly_rate) ** months - 1
+        )
 
-total_payment = emi * months
-total_interest = total_payment - loan_amount
+    total_payment = emi * months
+    total_interest = total_payment - loan_amount
 
-st.success("✅ Calculation Completed Successfully")
+    st.success("✅ Calculation Completed Successfully")
 
-col1, col2, col3 = st.columns(3)
+    col1, col2, col3 = st.columns(3)
 
-with col1:
-    st.metric(
-        "Monthly EMI",
-        f"Rs {emi:,.2f}"
-    )
+    with col1:
+        st.metric("Monthly EMI", f"Rs {emi:,.2f}")
 
-with col2:
-    st.metric(
-        "Total Payment",
-        f"Rs {total_payment:,.2f}"
-    )
+    with col2:
+        st.metric("Total Payment", f"Rs {total_payment:,.2f}")
 
-with col3:
-    st.metric(
-        "Total Interest",
-        f"Rs {total_interest:,.2f}"
-    )
+    with col3:
+        st.metric("Total Interest", f"Rs {total_interest:,.2f}")
 
-st.write("")
+    st.write("")
 
-st.markdown("### 📊 Loan Summary")
+    st.markdown("### 📊 Loan Summary")
 
-st.markdown(f"""
-<div class="result-box">
-<h4>Loan Information</h4>
+    st.markdown(f"""
+    <div class="result-box">
+    <h4>Loan Information</h4>
 
-<b>Loan Amount:</b> Rs {loan_amount:,.2f}<br>
-<b>Interest Rate:</b> {interest_rate}%<br>
-<b>Loan Tenure:</b> {years} Years<br>
-<b>Total Months:</b> {months}<br>
-<b>Interest Percentage:</b> {(total_interest/loan_amount)*100:.2f}%<br>
+    <b>Loan Amount:</b> Rs {loan_amount:,.2f}<br>
+    <b>Interest Rate:</b> {interest_rate}%<br>
+    <b>Loan Tenure:</b> {years} Years<br>
+    <b>Total Months:</b> {months}<br>
+    <b>Interest Percentage:</b> {(total_interest/loan_amount)*100:.2f}%<br>
 
-</div>
-""", unsafe_allow_html=True)
-```
+    </div>
+    """, unsafe_allow_html=True)
 
 st.write("---")
 st.caption("Developed by Maryam Alam Khan | BS FinTech Student")
