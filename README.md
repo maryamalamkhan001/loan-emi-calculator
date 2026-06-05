@@ -73,7 +73,7 @@ streamlit run app.py
 
 This application is deployed using Streamlit Community Cloud.
 
-🔗 Deployment Link: (https://loan-emi-calculator-a7byhswg5zauxxvhaduxj3.streamlit.app/)
+🔗 Deployment Link: (https://loan-emi-calculator-a7byhswg5zauxxvhaduxj3.streamlit.app/#loan-emi-calculator)
 
 ## 📸 Application Features
 
