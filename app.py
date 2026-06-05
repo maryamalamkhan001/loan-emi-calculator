@@ -142,24 +142,25 @@ if st.session_state.calculated:
     # ---------------- DARK LOAN SUMMARY ----------------
     st.subheader("📄 Loan Summary")
 
-    st.markdown(f"""
-    <div style="
-        background: linear-gradient(135deg, #0F172A, #1E293B);
-        padding:22px;
-        border-radius:14px;
-        color:white;
-        box-shadow:0px 8px 20px rgba(0,0,0,0.35);
-    ">
-        <h3 style="color:#38BDF8;">📄 Loan Information</h3>
-        <hr style="border:0.5px solid #334155;">
+st.markdown(f"""
+<div style="
+    background: linear-gradient(135deg, #0F172A, #1E293B);
+    padding:22px;
+    border-radius:14px;
+    color:white;
+    box-shadow:0px 8px 20px rgba(0,0,0,0.35);
+    line-height:1.8;
+">
+    <h3 style="color:#38BDF8;">📄 Loan Information</h3>
+    <hr style="border:0.5px solid #334155;">
 
-        <p><b>💰 Loan Amount:</b> Rs {st.session_state.loan_amount:,.0f}</p>
-        <p><b>📊 Interest Rate:</b> {st.session_state.interest_rate:.2f}%</p>
-        <p><b>📅 Loan Tenure:</b> {st.session_state.years} Years</p>
-        <p><b>⏳ Total Months:</b> {st.session_state.n}</p>
-        <p><b>📌 Total Interest:</b> Rs {st.session_state.total_interest:,.2f}</p>
-    </div>
-    """, unsafe_allow_html=True)
+    💰 <b>Loan Amount:</b> Rs {st.session_state.loan_amount:,.0f} <br>
+    📊 <b>Interest Rate:</b> {st.session_state.interest_rate:.2f}% <br>
+    📅 <b>Loan Tenure:</b> {st.session_state.years} Years <br>
+    ⏳ <b>Total Months:</b> {st.session_state.n} <br>
+    📌 <b>Total Interest:</b> Rs {st.session_state.total_interest:,.2f} <br>
+</div>
+""", unsafe_allow_html=True)
 
     # ---------------- PDF ----------------
     st.subheader("📥 Download Report")
