@@ -2,13 +2,14 @@ import streamlit as st
 import matplotlib.pyplot as plt
 from fpdf import FPDF
 
+# ---------------- PAGE CONFIG ----------------
 st.set_page_config(
     page_title="Loan EMI Calculator",
     page_icon="💰",
     layout="wide"
 )
 
-# ---------------- SAFE UI HEADER ----------------
+# ---------------- HEADER ----------------
 st.markdown(
     "<h1 style='text-align:center;color:#0F172A;'>💰 Loan EMI Calculator</h1>",
     unsafe_allow_html=True
@@ -72,7 +73,7 @@ if st.sidebar.button("🚀 Calculate EMI"):
 
     st.success("✅ Calculation Completed Successfully!")
 
-# ---------------- RESULTS ----------------
+# ---------------- DASHBOARD ----------------
 if st.session_state.calculated:
 
     st.write("## 📊 Dashboard Overview")
@@ -138,25 +139,25 @@ if st.session_state.calculated:
 
     st.pyplot(fig)
 
-    # ---------------- LOAN SUMMARY ----------------
+    # ---------------- DARK LOAN SUMMARY ----------------
     st.subheader("📄 Loan Summary")
 
     st.markdown(f"""
     <div style="
-        background:#ffffff;
-        padding:20px;
-        border-radius:12px;
-        border:1px solid #e2e8f0;
-        box-shadow:0px 6px 18px rgba(0,0,0,0.08);
+        background: linear-gradient(135deg, #0F172A, #1E293B);
+        padding:22px;
+        border-radius:14px;
+        color:white;
+        box-shadow:0px 8px 20px rgba(0,0,0,0.35);
     ">
-        <h3>Loan Information</h3>
-        <hr>
+        <h3 style="color:#38BDF8;">📄 Loan Information</h3>
+        <hr style="border:0.5px solid #334155;">
 
-        <p><b>Loan Amount:</b> Rs {st.session_state.loan_amount:,.0f}</p>
-        <p><b>Interest Rate:</b> {st.session_state.interest_rate:.2f}%</p>
-        <p><b>Loan Tenure:</b> {st.session_state.years} Years</p>
-        <p><b>Total Months:</b> {st.session_state.n}</p>
-        <p><b>Total Interest:</b> Rs {st.session_state.total_interest:,.2f}</p>
+        <p><b>💰 Loan Amount:</b> Rs {st.session_state.loan_amount:,.0f}</p>
+        <p><b>📊 Interest Rate:</b> {st.session_state.interest_rate:.2f}%</p>
+        <p><b>📅 Loan Tenure:</b> {st.session_state.years} Years</p>
+        <p><b>⏳ Total Months:</b> {st.session_state.n}</p>
+        <p><b>📌 Total Interest:</b> Rs {st.session_state.total_interest:,.2f}</p>
     </div>
     """, unsafe_allow_html=True)
 
