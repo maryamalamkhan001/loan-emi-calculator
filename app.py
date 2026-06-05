@@ -11,7 +11,7 @@ st.set_page_config(
 
 # ---------------- HEADER ----------------
 st.markdown(
-    "<h1 style='text-align:center;color:#0F172A;'>💰 Loan EMI Calculator</h1>",
+    "<h1 style='text-align:center;color:#FFFFFF;'>💰 Loan EMI Calculator</h1>",
     unsafe_allow_html=True
 )
 
