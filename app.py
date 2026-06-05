@@ -22,7 +22,7 @@ st.markdown(
 
 st.write("---")
 
-# ---------------- SIDEBAR INPUTS ----------------
+# ---------------- SIDEBAR ----------------
 st.sidebar.header("📋 Loan Details")
 
 loan_amount = st.sidebar.number_input("Loan Amount (Rs)", 1000.0, value=100000.0)
@@ -33,7 +33,7 @@ loan_amount = float(loan_amount)
 interest_rate = float(interest_rate)
 years_int = int(years)
 
-# ---------------- SESSION STATE ----------------
+# ---------------- SESSION ----------------
 if "calculated" not in st.session_state:
     st.session_state.calculated = False
 
@@ -82,45 +82,24 @@ if st.session_state.calculated:
 
     with col1:
         st.markdown(f"""
-        <div style="
-            background:#0F172A;
-            color:white;
-            padding:20px;
-            border-radius:12px;
-            text-align:center;
-        ">
-        💰
-        <h2>Rs {st.session_state.emi:,.0f}</h2>
+        <div style="background:#0F172A;color:white;padding:20px;border-radius:12px;text-align:center;">
+        💰<h2>Rs {st.session_state.emi:,.0f}</h2>
         <p>Monthly EMI</p>
         </div>
         """, unsafe_allow_html=True)
 
     with col2:
         st.markdown(f"""
-        <div style="
-            background:#0F172A;
-            color:white;
-            padding:20px;
-            border-radius:12px;
-            text-align:center;
-        ">
-        📊
-        <h2>Rs {st.session_state.total_payment:,.0f}</h2>
+        <div style="background:#0F172A;color:white;padding:20px;border-radius:12px;text-align:center;">
+        📊<h2>Rs {st.session_state.total_payment:,.0f}</h2>
         <p>Total Payment</p>
         </div>
         """, unsafe_allow_html=True)
 
     with col3:
         st.markdown(f"""
-        <div style="
-            background:#0F172A;
-            color:white;
-            padding:20px;
-            border-radius:12px;
-            text-align:center;
-        ">
-        📌
-        <h2>Rs {st.session_state.total_interest:,.0f}</h2>
+        <div style="background:#0F172A;color:white;padding:20px;border-radius:12px;text-align:center;">
+        📌<h2>Rs {st.session_state.total_interest:,.0f}</h2>
         <p>Total Interest</p>
         </div>
         """, unsafe_allow_html=True)
@@ -139,28 +118,28 @@ if st.session_state.calculated:
 
     st.pyplot(fig)
 
-    # ---------------- DARK LOAN SUMMARY ----------------
+    # ---------------- LOAN SUMMARY (FIXED INDENTATION) ----------------
     st.subheader("📄 Loan Summary")
 
-st.markdown(f"""
-<div style="
-    background: linear-gradient(135deg, #0F172A, #1E293B);
-    padding:22px;
-    border-radius:14px;
-    color:white;
-    box-shadow:0px 8px 20px rgba(0,0,0,0.35);
-    line-height:1.8;
-">
-    <h3 style="color:#38BDF8;">📄 Loan Information</h3>
-    <hr style="border:0.5px solid #334155;">
+    st.markdown(f"""
+    <div style="
+        background: linear-gradient(135deg, #0F172A, #1E293B);
+        padding:22px;
+        border-radius:14px;
+        color:white;
+        box-shadow:0px 8px 20px rgba(0,0,0,0.35);
+        line-height:1.8;
+    ">
+        <h3 style="color:#38BDF8;">📄 Loan Information</h3>
+        <hr style="border:0.5px solid #334155;">
 
-    💰 <b>Loan Amount:</b> Rs {st.session_state.loan_amount:,.0f} <br>
-    📊 <b>Interest Rate:</b> {st.session_state.interest_rate:.2f}% <br>
-    📅 <b>Loan Tenure:</b> {st.session_state.years} Years <br>
-    ⏳ <b>Total Months:</b> {st.session_state.n} <br>
-    📌 <b>Total Interest:</b> Rs {st.session_state.total_interest:,.2f} <br>
-</div>
-""", unsafe_allow_html=True)
+        💰 <b>Loan Amount:</b> Rs {st.session_state.loan_amount:,.0f} <br>
+        📊 <b>Interest Rate:</b> {st.session_state.interest_rate:.2f}% <br>
+        📅 <b>Loan Tenure:</b> {st.session_state.years} Years <br>
+        ⏳ <b>Total Months:</b> {st.session_state.n} <br>
+        📌 <b>Total Interest:</b> Rs {st.session_state.total_interest:,.2f} <br>
+    </div>
+    """, unsafe_allow_html=True)
 
     # ---------------- PDF ----------------
     st.subheader("📥 Download Report")
