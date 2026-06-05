@@ -47,6 +47,11 @@ loan_amount = st.sidebar.number_input("Loan Amount (Rs)", 1000.0, value=100000.0
 interest_rate = st.sidebar.number_input("Interest Rate (%)", 0.0, value=12.0)
 years = st.sidebar.number_input("Tenure (Years)", 1.0, value=5.0)
 
+# FIX: clean values (no decimals in UI)
+loan_amount = float(loan_amount)
+interest_rate = float(interest_rate)
+years_int = int(years)
+
 # ---------------- SESSION STATE ----------------
 if "calculated" not in st.session_state:
     st.session_state.calculated = False
@@ -54,7 +59,7 @@ if "calculated" not in st.session_state:
 if st.sidebar.button("🚀 Calculate EMI"):
 
     r = interest_rate / (12 * 100)
-    n = int(years * 12)
+    n = years_int * 12
 
     emi = (loan_amount * r * (1 + r) ** n) / ((1 + r) ** n - 1) if r != 0 else loan_amount / n
 
@@ -79,14 +84,15 @@ if st.sidebar.button("🚀 Calculate EMI"):
     st.session_state.total_interest = (emi * n) - loan_amount
     st.session_state.loan_amount = loan_amount
     st.session_state.interest_rate = interest_rate
-    st.session_state.years = years
+    st.session_state.years = years_int
+    st.session_state.n = n
     st.session_state.month_list = month_list
     st.session_state.interest_list = interest_list
     st.session_state.principal_list = principal_list
 
     st.success("✅ Calculation Completed Successfully!")
 
-# ---------------- SHOW RESULTS ONLY IF CALCULATED ----------------
+# ---------------- SHOW RESULTS ----------------
 if st.session_state.calculated:
 
     col1, col2, col3 = st.columns(3)
@@ -117,9 +123,10 @@ if st.session_state.calculated:
         <h4>Loan Information</h4>
         <hr>
 
-        <b>Loan Amount:</b> Rs {st.session_state.loan_amount:,.2f}<br><br>
-        <b>Interest Rate:</b> {st.session_state.interest_rate}%<br><br>
+        <b>Loan Amount:</b> Rs {st.session_state.loan_amount:,.0f}<br><br>
+        <b>Interest Rate:</b> {st.session_state.interest_rate:.2f}%<br><br>
         <b>Loan Tenure:</b> {st.session_state.years} Years<br><br>
+        <b>Total Months:</b> {st.session_state.n}<br><br>
         <b>Total Interest:</b> Rs {st.session_state.total_interest:,.2f}<br>
     </div>
     """, unsafe_allow_html=True)
@@ -138,8 +145,8 @@ if st.session_state.calculated:
         pdf.add_page()
         pdf.set_font("Arial", size=12)
 
-        pdf.cell(200, 10, txt=f"Loan Amount: Rs {st.session_state.loan_amount}", ln=True)
-        pdf.cell(200, 10, txt=f"Interest Rate: {st.session_state.interest_rate}%", ln=True)
+        pdf.cell(200, 10, txt=f"Loan Amount: Rs {st.session_state.loan_amount:,.0f}", ln=True)
+        pdf.cell(200, 10, txt=f"Interest Rate: {st.session_state.interest_rate:.2f}%", ln=True)
         pdf.cell(200, 10, txt=f"Tenure: {st.session_state.years} Years", ln=True)
         pdf.cell(200, 10, txt=f"Monthly EMI: Rs {st.session_state.emi:.2f}", ln=True)
         pdf.cell(200, 10, txt=f"Total Payment: Rs {st.session_state.total_payment:.2f}", ln=True)
