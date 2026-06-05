@@ -3,53 +3,26 @@ import matplotlib.pyplot as plt
 from fpdf import FPDF
 
 st.set_page_config(
-    page_title="Professional Loan EMI Calculator",
+    page_title="Loan EMI Calculator",
     page_icon="💰",
     layout="wide"
 )
 
-# ---------------- UI STYLE ----------------
-st.markdown("""
-<style>
-.title {
-    text-align:center;
-    color:#0F172A;
-    font-size:44px;
-    font-weight:800;
-}
+# ---------------- SAFE UI HEADER ----------------
+st.markdown(
+    "<h1 style='text-align:center;color:#0F172A;'>💰 Loan EMI Calculator</h1>",
+    unsafe_allow_html=True
+)
 
-.subtitle {
-    text-align:center;
-    color:#64748B;
-    font-size:18px;
-    margin-bottom:20px;
-}
-
-.card {
-    background: linear-gradient(135deg, #ffffff, #f1f5f9);
-    padding:20px;
-    border-radius:12px;
-    border:1px solid #e2e8f0;
-    box-shadow:0px 6px 18px rgba(0,0,0,0.08);
-}
-
-.metric-box {
-    background:#0f172a;
-    padding:15px;
-    border-radius:12px;
-    color:white;
-    text-align:center;
-}
-</style>
-""", unsafe_allow_html=True)
-
-st.markdown('<p class="title">💰 Loan EMI Calculator</p>', unsafe_allow_html=True)
-st.markdown('<p class="subtitle">Smart FinTech Dashboard</p>', unsafe_allow_html=True)
+st.markdown(
+    "<p style='text-align:center;color:#64748B;font-size:18px;'>Smart FinTech Dashboard</p>",
+    unsafe_allow_html=True
+)
 
 st.write("---")
 
-# ---------------- INPUTS ----------------
-st.sidebar.header("📋 Loan Inputs")
+# ---------------- SIDEBAR INPUTS ----------------
+st.sidebar.header("📋 Loan Details")
 
 loan_amount = st.sidebar.number_input("Loan Amount (Rs)", 1000.0, value=100000.0)
 interest_rate = st.sidebar.number_input("Interest Rate (%)", 0.0, value=12.0)
@@ -59,10 +32,11 @@ loan_amount = float(loan_amount)
 interest_rate = float(interest_rate)
 years_int = int(years)
 
-# ---------------- SESSION ----------------
+# ---------------- SESSION STATE ----------------
 if "calculated" not in st.session_state:
     st.session_state.calculated = False
 
+# ---------------- CALCULATION ----------------
 if st.sidebar.button("🚀 Calculate EMI"):
 
     r = interest_rate / (12 * 100)
@@ -96,9 +70,9 @@ if st.sidebar.button("🚀 Calculate EMI"):
     st.session_state.interest_list = interest_list
     st.session_state.principal_list = principal_list
 
-    st.success("✅ Calculation Completed!")
+    st.success("✅ Calculation Completed Successfully!")
 
-# ---------------- OUTPUT ----------------
+# ---------------- RESULTS ----------------
 if st.session_state.calculated:
 
     st.write("## 📊 Dashboard Overview")
@@ -107,27 +81,45 @@ if st.session_state.calculated:
 
     with col1:
         st.markdown(f"""
-        <div class="metric-box">
-        💰<br>
-        <h3>Rs {st.session_state.emi:,.0f}</h3>
+        <div style="
+            background:#0F172A;
+            color:white;
+            padding:20px;
+            border-radius:12px;
+            text-align:center;
+        ">
+        💰
+        <h2>Rs {st.session_state.emi:,.0f}</h2>
         <p>Monthly EMI</p>
         </div>
         """, unsafe_allow_html=True)
 
     with col2:
         st.markdown(f"""
-        <div class="metric-box">
-        📊<br>
-        <h3>Rs {st.session_state.total_payment:,.0f}</h3>
+        <div style="
+            background:#0F172A;
+            color:white;
+            padding:20px;
+            border-radius:12px;
+            text-align:center;
+        ">
+        📊
+        <h2>Rs {st.session_state.total_payment:,.0f}</h2>
         <p>Total Payment</p>
         </div>
         """, unsafe_allow_html=True)
 
     with col3:
         st.markdown(f"""
-        <div class="metric-box">
-        📌<br>
-        <h3>Rs {st.session_state.total_interest:,.0f}</h3>
+        <div style="
+            background:#0F172A;
+            color:white;
+            padding:20px;
+            border-radius:12px;
+            text-align:center;
+        ">
+        📌
+        <h2>Rs {st.session_state.total_interest:,.0f}</h2>
         <p>Total Interest</p>
         </div>
         """, unsafe_allow_html=True)
@@ -146,16 +138,23 @@ if st.session_state.calculated:
 
     st.pyplot(fig)
 
-    # ---------------- SUMMARY ----------------
+    # ---------------- LOAN SUMMARY ----------------
     st.subheader("📄 Loan Summary")
 
     st.markdown(f"""
-    <div class="card">
-        <h4>Loan Details</h4>
+    <div style="
+        background:#ffffff;
+        padding:20px;
+        border-radius:12px;
+        border:1px solid #e2e8f0;
+        box-shadow:0px 6px 18px rgba(0,0,0,0.08);
+    ">
+        <h3>Loan Information</h3>
         <hr>
+
         <p><b>Loan Amount:</b> Rs {st.session_state.loan_amount:,.0f}</p>
         <p><b>Interest Rate:</b> {st.session_state.interest_rate:.2f}%</p>
-        <p><b>Tenure:</b> {st.session_state.years} Years</p>
+        <p><b>Loan Tenure:</b> {st.session_state.years} Years</p>
         <p><b>Total Months:</b> {st.session_state.n}</p>
         <p><b>Total Interest:</b> Rs {st.session_state.total_interest:,.2f}</p>
     </div>
